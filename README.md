@@ -1,6 +1,6 @@
 # robo-advisor
 
-A solution for the "Robo Advisor Project
+A solution for the "Robo Advisor" Project
 
 # Prerequisites
     Anaconda 3.7
