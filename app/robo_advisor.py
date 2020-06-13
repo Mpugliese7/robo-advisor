@@ -26,6 +26,14 @@ dates = list(date_keys) # assumes first day is on top
 latest_day = dates[0]
 latest_close = parsed_response["Time Series (Daily)"][latest_day]["4. close"]
 
+high_prices = []
+
+for date in dates:
+    high_price = float(parsed_response["Time Series (Daily)"][date]["2. high"])
+    high_prices.append(high_price)
+
+recent_high = max(high_prices)
+
 #breakpoint()
 
 print("-------------------------")
@@ -36,7 +44,7 @@ print("REQUEST AT:", now.strftime("%Y-%m-%d %I:%M%p"))
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
-print("RECENT HIGH: $101,000.00")
+print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print("RECENT LOW: $99,000.00")
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
