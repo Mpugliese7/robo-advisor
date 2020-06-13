@@ -5,6 +5,9 @@ import requests
 import json
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
@@ -13,11 +16,20 @@ now = datetime.now()
 
 # Info Inputs
 
-request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=demo"
+ticker = "IBM"
+# while True:
+#     ticker_input = input("Please input a stock ticker: ")
+#     if ticker_input == "DONE":
+#         break
+#     elif selected_id not in all_ids:
+#         raise ValueError("Error: Please enter an integer from 1 to 20")
+#     else:
+#         ticker.append(selected_id)
+
+api_key = os.environ.get("ALHPAADVANTAGE_API_KEY")
+
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={api_key}"
 response = requests.get(request_url)
-# print(type(response))
-# print(response.status_code)
-# print(response.text)
 
 parsed_response = json.loads(response.text)
 
