@@ -16,15 +16,11 @@ now = datetime.now()
 
 # Info Inputs
 
-ticker = "IBM"
-# while True:
-#     ticker_input = input("Please input a stock ticker: ")
-#     if ticker_input == "DONE":
-#         break
-#     elif selected_id not in all_ids:
-#         raise ValueError("Error: Please enter an integer from 1 to 20")
-#     else:
-#         ticker.append(selected_id)
+ticker = input("Please input a ticker: ")
+if not ticker.isalpha():
+    raise ValueError("Error: Please enter a valid stock ticker like WFC")
+if len(ticker) > 5:
+    raise ValueError("Error: Please enter a valid stock ticker like WFC")
 
 api_key = os.environ.get("ALHPAADVANTAGE_API_KEY")
 
@@ -32,6 +28,9 @@ request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&sym
 response = requests.get(request_url)
 
 parsed_response = json.loads(response.text)
+
+if "Error Message" in parsed_response:
+    raise ValueError("Sorry, couldn't find any trading data for that stock ticker")
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
@@ -69,8 +68,13 @@ with open(csv_file_path, "w") as csv_file:
             "volume": daily_prices["5. volume"],
         })
 
+if float(latest_close) < 1.2 * float(recent_low): 
+    recommendation = "Buy!"
+else:
+    recommendation = "Don't Buy!"
+
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print(f"SELECTED SYMBOL: {ticker}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print("REQUEST AT:", now.strftime("%Y-%m-%d %I:%M%p"))
@@ -80,7 +84,7 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
+print(f"RECOMMENDATION: {recommendation}")
 print("RECOMMENDATION REASON: TODO")
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}")
