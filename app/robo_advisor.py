@@ -73,6 +73,11 @@ if float(latest_close) < 1.2 * float(recent_low):
 else:
     recommendation = "Don't Buy!"
 
+if recommendation == "Buy!":
+    recommendation_reason = "Because the stock's latest close is within 20% of its recent low"
+else:
+    recommendation_reason = "Because the stock's latest close is not within 20% of its recent low"
+
 print("-------------------------")
 print(f"SELECTED SYMBOL: {ticker}")
 print("-------------------------")
@@ -85,7 +90,7 @@ print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
 print(f"RECOMMENDATION: {recommendation}")
-print("RECOMMENDATION REASON: TODO")
+print(f"RECOMMENDATION REASON: {recommendation_reason}")
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {csv_file_path}")
 print("-------------------------")
